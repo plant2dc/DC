@@ -12,38 +12,44 @@ st.set_page_config(
 )
 
 # =====================================
-# CSS FULL HP
+# CSS MOBILE
 # =====================================
 
 st.markdown("""
 <style>
 
-/* Container utama */
-.main .block-container {
+/* Gunakan seluruh lebar layar */
+.block-container {
     max-width: 100% !important;
-    padding-top: 0.5rem !important;
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
+    width: 100% !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
 }
 
-/* Input */
+/* Hilangkan ruang kosong berlebihan */
+.main {
+    width: 100% !important;
+}
+
+/* Input lebih besar */
 .stTextInput input {
-    font-size: 20px !important;
+    font-size: 18px !important;
 }
 
-/* Tombol */
-.stButton button {
+/* Tombol full layar */
+.stButton > button {
     width: 100% !important;
     height: 50px !important;
     font-size: 18px !important;
 }
 
-/* Metric */
+/* Kartu metric */
 [data-testid="metric-container"] {
     border: 1px solid #dddddd;
-    padding: 10px;
     border-radius: 10px;
+    padding: 10px;
 }
 
 </style>
@@ -87,14 +93,10 @@ if not st.session_state.login:
 
     if st.button("LOGIN"):
 
-        if (
-            username in users
-            and users[username] == password
-        ):
+        if username in users and users[username] == password:
 
             st.session_state.login = True
             st.session_state.user = username
-            st.rerun()
 
         else:
 
@@ -106,13 +108,15 @@ if not st.session_state.login:
 # DASHBOARD
 # =====================================
 
-else:
+if st.session_state.login:
 
     st.title("🚚 DELIVERY CONTROL")
 
     st.success(
         f"Selamat datang {st.session_state.user}"
     )
+
+    st.divider()
 
     plan = st.number_input(
         "📦 Plan Delivery",
@@ -167,4 +171,3 @@ else:
 
         st.session_state.login = False
         st.session_state.user = ""
-        st.rerun()
