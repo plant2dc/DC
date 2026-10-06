@@ -1,37 +1,56 @@
 import streamlit as st
 
 # =====================================
-# PENGATURAN HALAMAN
+# PAGE CONFIG
 # =====================================
 
 st.set_page_config(
     page_title="Delivery Control",
     page_icon="🚚",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
 # =====================================
-# CSS MOBILE FRIENDLY
+# CSS FULL HP
 # =====================================
 
 st.markdown("""
 <style>
-.block-container {
+
+/* Container utama */
+.main .block-container {
     max-width: 100% !important;
-    padding-top: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-top: 0.5rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
 }
 
-div.stButton > button {
-    width: 100%;
+/* Input */
+.stTextInput input {
+    font-size: 20px !important;
 }
+
+/* Tombol */
+.stButton button {
+    width: 100% !important;
+    height: 50px !important;
+    font-size: 18px !important;
+}
+
+/* Metric */
+[data-testid="metric-container"] {
+    border: 1px solid #dddddd;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
 # =====================================
-# DATA USER
+# USER
 # =====================================
 
 users = {
@@ -55,11 +74,11 @@ if "user" not in st.session_state:
 
 if not st.session_state.login:
 
-    st.title("🔐 Login Delivery Control")
+    st.title("🚚 DELIVERY CONTROL")
 
-    username = st.text_input(
-        "Username"
-    )
+    st.subheader("Login")
+
+    username = st.text_input("Username")
 
     password = st.text_input(
         "Password",
@@ -95,8 +114,6 @@ else:
         f"Selamat datang {st.session_state.user}"
     )
 
-    st.markdown("---")
-
     plan = st.number_input(
         "📦 Plan Delivery",
         min_value=0,
@@ -122,7 +139,7 @@ else:
             min(progress, 1.0)
         )
 
-    st.markdown("---")
+    st.divider()
 
     st.metric(
         "🚚 Total Truck",
@@ -144,7 +161,7 @@ else:
         "5"
     )
 
-    st.markdown("---")
+    st.divider()
 
     if st.button("LOGOUT"):
 
