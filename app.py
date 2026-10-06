@@ -1,83 +1,150 @@
 import streamlit as st
 
+# =====================================
+# CONFIG
+# =====================================
+
 st.set_page_config(
     page_title="Delivery Control",
     page_icon="🚚",
     layout="wide"
 )
 
-st.markdown("""
-<style>
+# =====================================
+# USER LOGIN
+# =====================================
 
-/* Paksa container penuh */
-.block-container {
-    max-width: 100% !important;
-    padding: 0px !important;
+users = {
+    "fani": "12345",
+    "DC": "54321"
 }
 
-/* Hilangkan jarak bawaan */
-.main {
-    padding: 0px !important;
-}
+# =====================================
+# SESSION
+# =====================================
 
-/* Header biru */
-.header {
-    width: 100%;
-    background: #0078D4;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    font-size: 28px;
-    font-weight: bold;
-}
+if "login" not in st.session_state:
+    st.session_state.login = False
 
-/* Card */
-.card {
-    width: calc(100% - 20px);
-    margin: 10px;
-    background: white;
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
+if "user" not in st.session_state:
+    st.session_state.user = ""
 
-.title {
-    font-size: 20px;
-    color: #666;
-}
+# =====================================
+# LOGIN
+# =====================================
 
-.value {
-    font-size: 40px;
-    font-weight: bold;
-    color: #0078D4;
-}
+if not st.session_state.login:
 
-</style>
-""", unsafe_allow_html=True)
+    st.title("🔐 Login Delivery Control")
 
-st.markdown("""
-<div class="header">
-🚚 DELIVERY CONTROL
-</div>
+    username = st.text_input("Username")
 
-<div class="card">
-    <div class="title">🚚 TOTAL TRUCK</div>
-    <div class="value">25</div>
-</div>
+    password = st.text_input(
+        "Password",
+        type="password"
+    )
 
-<div class="card">
-    <div class="title">📦 TOTAL OUTER</div>
-    <div class="value">1500</div>
-</div>
+    if st.button("Login"):
 
-<div class="card">
-    <div class="title">✅ VERIFICATION</div>
-    <div class="value">100</div>
-</div>
+        if (
+            username in users and
+            users[username] == password
+        ):
 
-<div class="card">
-    <div class="title">⚠️ OUTSTANDING</div>
-    <div class="value">5</div>
-</div>
-""", unsafe_allow_html=True)
+            st.session_state.login = True
+            st.session_state.user = username
+            st.rerun()
+
+        else:
+
+            st.error(
+                "Username atau Password salah"
+            )
+
+# =====================================
+# DASHBOARD
+# =====================================
+
+else:
+
+    st.title("🚚 DELIVERY CONTROL")
+
+    st.success(
+        f"Selamat datang {st.session_state.user}"
+    )
+
+    st.divider()
+
+    # KPI BARIS 1
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric(
+            "🚚 Total Truck",
+            "25"
+        )
+
+    with col2:
+        st.metric(
+            "📦 Total Outer",
+            "1500"
+        )
+
+    # KPI BARIS 2
+    col3, col4 = st.columns(2)
+
+    with col3:
+        st.metric(
+            "✅ Verification",
+            "100"
+        )
+
+    with col4:
+        st.metric(
+            "⚠️ Outstanding",
+            "5"
+        )
+
+    st.divider()
+
+    st.subheader("📊 Progress Delivery")
+
+    plan = st.number_input(
+        "Plan Delivery",
+        min_value=0,
+        value=100
+    )
+
+    actual = st.number_input(
+        "Actual Delivery",
+        min_value=0,
+        value=80
+    )
+
+    if plan > 0:
+
+        progress = actual / plan
+
+        st.metric(
+            "Progress",
+            f"{progress:.0%}"
+        )
+
+        st.progress(
+            min(progress, 1.0)
+        )
+
+    st.divider()
+
+    st.subheader("📈 Status Hari Ini")
+
+    st.info(
+        "Dashboard masih prototype. Data KPI akan dihubungkan ke export NocoBase."
+    )
+
+    if st.button("Logout"):
+
+        st.session_state.login = False
+        st.session_state.user = ""
+
+        st.rerun()
