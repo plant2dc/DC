@@ -1,127 +1,83 @@
 import streamlit as st
 
-# =====================================
-# PAGE CONFIG
-# =====================================
-
 st.set_page_config(
     page_title="Delivery Control",
     page_icon="🚚",
     layout="wide"
 )
 
-# =====================================
-# USER LOGIN
-# =====================================
+st.markdown("""
+<style>
 
-users = {
-    "fani": "12345",
-    "DC": "54321"
+/* Paksa container penuh */
+.block-container {
+    max-width: 100% !important;
+    padding: 0px !important;
 }
 
-# =====================================
-# SESSION
-# =====================================
+/* Hilangkan jarak bawaan */
+.main {
+    padding: 0px !important;
+}
 
-if "login" not in st.session_state:
-    st.session_state.login = False
+/* Header biru */
+.header {
+    width: 100%;
+    background: #0078D4;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
 
-if "user" not in st.session_state:
-    st.session_state.user = ""
+/* Card */
+.card {
+    width: calc(100% - 20px);
+    margin: 10px;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
 
-# =====================================
-# LOGIN
-# =====================================
+.title {
+    font-size: 20px;
+    color: #666;
+}
 
-if not st.session_state.login:
+.value {
+    font-size: 40px;
+    font-weight: bold;
+    color: #0078D4;
+}
 
-    st.title("🔐 Login Delivery Control")
+</style>
+""", unsafe_allow_html=True)
 
-    username = st.text_input("Username")
+st.markdown("""
+<div class="header">
+🚚 DELIVERY CONTROL
+</div>
 
-    password = st.text_input(
-        "Password",
-        type="password"
-    )
+<div class="card">
+    <div class="title">🚚 TOTAL TRUCK</div>
+    <div class="value">25</div>
+</div>
 
-    if st.button("Login"):
+<div class="card">
+    <div class="title">📦 TOTAL OUTER</div>
+    <div class="value">1500</div>
+</div>
 
-        if (
-            username in users
-            and users[username] == password
-        ):
+<div class="card">
+    <div class="title">✅ VERIFICATION</div>
+    <div class="value">100</div>
+</div>
 
-            st.session_state.login = True
-            st.session_state.user = username
-
-        else:
-
-            st.error(
-                "Username atau Password salah"
-            )
-
-# =====================================
-# DASHBOARD
-# =====================================
-
-if st.session_state.login:
-
-    st.title("🚚 DELIVERY CONTROL")
-
-    st.success(
-        f"Selamat datang {st.session_state.user}"
-    )
-
-    plan = st.number_input(
-        "📦 Plan Delivery",
-        min_value=0,
-        value=0
-    )
-
-    actual = st.number_input(
-        "✅ Actual Delivery",
-        min_value=0,
-        value=0
-    )
-
-    if plan > 0:
-
-        progress = actual / plan
-
-        st.metric(
-            "📊 Progress",
-            f"{progress:.0%}"
-        )
-
-        st.progress(
-            min(progress, 1.0)
-        )
-
-    st.divider()
-
-    st.metric(
-        "🚚 Total Truck",
-        "25"
-    )
-
-    st.metric(
-        "📦 Total Outer",
-        "1500"
-    )
-
-    st.metric(
-        "✅ Verification",
-        "100"
-    )
-
-    st.metric(
-        "⚠️ Outstanding",
-        "5"
-    )
-
-    st.divider()
-
-    if st.button("Logout"):
-
-        st.session_state.login = False
-        st.session_state.user = ""
+<div class="card">
+    <div class="title">⚠️ OUTSTANDING</div>
+    <div class="value">5</div>
+</div>
+""", unsafe_allow_html=True)
