@@ -1,5 +1,11 @@
 import streamlit as st
 
+st.set_page_config(
+    page_title="Delivery Control",
+    page_icon="🚚",
+    layout="centered"
+)
+
 # =========================
 # DATA USER
 # =========================
@@ -52,6 +58,8 @@ if st.session_state.login:
         f"Selamat datang {st.session_state.user}"
     )
 
+    st.subheader("Monitoring Harian")
+
     plan = st.number_input(
         "Plan Delivery",
         min_value=0
@@ -67,7 +75,7 @@ if st.session_state.login:
         progress = actual / plan
 
         st.metric(
-            "Progress",
+            "📊 Progress",
             f"{progress:.0%}"
         )
 
@@ -75,15 +83,30 @@ if st.session_state.login:
 
     st.divider()
 
-    col1, col2 = st.columns(2)
+    st.metric(
+        "🚚 Jumlah Truk",
+        25
+    )
 
-    with col1:
-        st.metric("Jumlah Truk", 25)
+    st.metric(
+        "📦 Jumlah Outer",
+        1500
+    )
 
-    with col2:
-        st.metric("Jumlah Outer", 1500)
+    st.metric(
+        "✅ Verification",
+        100
+    )
+
+    st.metric(
+        "⚠️ Outstanding",
+        5
+    )
+
+    st.divider()
 
     if st.button("Logout"):
 
         st.session_state.login = False
         st.session_state.user = ""
+``
