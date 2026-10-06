@@ -3,11 +3,12 @@ import streamlit as st
 st.set_page_config(
     page_title="Delivery Control",
     page_icon="🚚",
-    layout="centered"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
 # =========================
-# DATA USER
+# USER LOGIN
 # =========================
 
 users = {
@@ -31,43 +32,57 @@ if "user" not in st.session_state:
 
 if not st.session_state.login:
 
-    st.title("🔐 Login Delivery Control")
+    st.markdown("# 🚚 DELIVERY CONTROL")
+
+    st.markdown("### Login")
 
     username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    password = st.text_input(
+        "Password",
+        type="password"
+    )
 
-    if st.button("Login"):
+    if st.button(
+        "LOGIN",
+        use_container_width=True
+    ):
 
         if username in users and users[username] == password:
 
             st.session_state.login = True
             st.session_state.user = username
+            st.rerun()
 
         else:
-            st.error("Username atau Password salah")
+
+            st.error(
+                "Username atau Password salah"
+            )
 
 # =========================
 # DASHBOARD
 # =========================
 
-if st.session_state.login:
+else:
 
-    st.title("🚚 DELIVERY CONTROL")
+    st.markdown("# 🚚 DELIVERY CONTROL")
 
     st.success(
         f"Selamat datang {st.session_state.user}"
     )
 
-    st.subheader("Monitoring Harian")
+    st.markdown("---")
 
     plan = st.number_input(
-        "Plan Delivery",
-        min_value=0
+        "📦 Plan Delivery",
+        min_value=0,
+        value=0
     )
 
     actual = st.number_input(
-        "Actual Delivery",
-        min_value=0
+        "✅ Actual Delivery",
+        min_value=0,
+        value=0
     )
 
     if plan > 0:
@@ -79,33 +94,38 @@ if st.session_state.login:
             f"{progress:.0%}"
         )
 
-        st.progress(min(progress, 1.0))
+        st.progress(
+            min(progress, 1.0)
+        )
 
-    st.divider()
+    st.markdown("---")
 
     st.metric(
-        "🚚 Jumlah Truk",
-        25
+        "🚚 Total Truck",
+        "25"
     )
 
     st.metric(
-        "📦 Jumlah Outer",
-        1500
+        "📦 Total Outer",
+        "1500"
     )
 
     st.metric(
         "✅ Verification",
-        100
+        "100"
     )
 
     st.metric(
         "⚠️ Outstanding",
-        5
+        "5"
     )
 
-    st.divider()
+    st.markdown("---")
 
-    if st.button("Logout"):
-
+    if st.button(
+        "LOGOUT",
+        use_container_width=True
+    ):
         st.session_state.login = False
         st.session_state.user = ""
+        st.rerun()
