@@ -10,11 +10,18 @@ users = {
 }
 
 # =========================
-# LOGIN
+# SESSION
 # =========================
 
 if "login" not in st.session_state:
     st.session_state.login = False
+
+if "user" not in st.session_state:
+    st.session_state.user = ""
+
+# =========================
+# LOGIN
+# =========================
 
 if not st.session_state.login:
 
@@ -26,9 +33,9 @@ if not st.session_state.login:
     if st.button("Login"):
 
         if username in users and users[username] == password:
+
             st.session_state.login = True
             st.session_state.user = username
-            st.rerun()
 
         else:
             st.error("Username atau Password salah")
@@ -37,7 +44,7 @@ if not st.session_state.login:
 # DASHBOARD
 # =========================
 
-else:
+if st.session_state.login:
 
     st.title("🚚 DELIVERY CONTROL")
 
@@ -77,5 +84,6 @@ else:
         st.metric("Jumlah Outer", 1500)
 
     if st.button("Logout"):
+
         st.session_state.login = False
-        st.rerun()
+        st.session_state.user = ""
