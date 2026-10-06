@@ -1,52 +1,72 @@
 import streamlit as st
 
 # =====================================
-# KONFIGURASI
+# PAGE CONFIG
 # =====================================
 
 st.set_page_config(
     page_title="Delivery Control",
     page_icon="🚚",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
 # =====================================
-# CSS MOBILE STYLE
+# CSS MOBILE
 # =====================================
 
 st.markdown("""
 <style>
 
 .block-container{
+    max-width:100%;
+    width:100%;
     padding-top:10px;
     padding-left:10px;
     padding-right:10px;
     padding-bottom:10px;
 }
 
+/* Card Dashboard */
 .card{
-    background:white;
-    border-radius:15px;
+    background:#ffffff;
+    border-radius:20px;
     padding:20px;
     margin-bottom:15px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+    box-shadow:0px 3px 10px rgba(0,0,0,0.15);
     text-align:center;
 }
 
-.judul{
-    font-size:18px;
+/* Judul Card */
+.title-card{
+    font-size:20px;
     color:#666666;
+    margin-bottom:10px;
 }
 
-.nilai{
-    font-size:36px;
+/* Nilai Card */
+.value-card{
+    font-size:42px;
     font-weight:bold;
     color:#0078D4;
 }
 
+/* Tombol */
 div.stButton > button{
     width:100%;
-    height:50px;
+    height:55px;
+    font-size:18px;
+    border-radius:10px;
+}
+
+/* Input */
+.stTextInput input{
+    font-size:18px;
+}
+
+/* Hilangkan jarak berlebih */
+h1{
+    text-align:center;
 }
 
 </style>
@@ -72,17 +92,21 @@ if "user" not in st.session_state:
     st.session_state.user = ""
 
 # =====================================
-# HALAMAN LOGIN
+# LOGIN PAGE
 # =====================================
 
 if not st.session_state.login:
 
     st.markdown(
-        "<h1 style='text-align:center'>🚚 DELIVERY CONTROL</h1>",
+        "<h1>🚚 DELIVERY CONTROL</h1>",
         unsafe_allow_html=True
     )
 
-    username = st.text_input("Username")
+    st.write("")
+
+    username = st.text_input(
+        "Username"
+    )
 
     password = st.text_input(
         "Password",
@@ -92,13 +116,12 @@ if not st.session_state.login:
     if st.button("LOGIN"):
 
         if (
-            username in users and
-            users[username] == password
+            username in users
+            and users[username] == password
         ):
 
             st.session_state.login = True
             st.session_state.user = username
-
             st.rerun()
 
         else:
@@ -114,7 +137,7 @@ if not st.session_state.login:
 else:
 
     st.markdown(
-        "<h1 style='text-align:center'>🚚 DELIVERY CONTROL</h1>",
+        "<h1>🚚 DELIVERY CONTROL</h1>",
         unsafe_allow_html=True
     )
 
@@ -123,31 +146,43 @@ else:
     )
 
     st.markdown("""
-    <div class="card">
-        <div class="judul">🚚 Total Truck</div>
-        <div class="nilai">25</div>
-    </div>
-    """, unsafe_allow_html=True)
 
-    st.markdown("""
     <div class="card">
-        <div class="judul">📦 Total Outer</div>
-        <div class="nilai">1500</div>
+        <div class="title-card">
+            🚚 TOTAL TRUCK
+        </div>
+        <div class="value-card">
+            25
+        </div>
     </div>
-    """, unsafe_allow_html=True)
 
-    st.markdown("""
     <div class="card">
-        <div class="judul">✅ Verification</div>
-        <div class="nilai">100</div>
+        <div class="title-card">
+            📦 TOTAL OUTER
+        </div>
+        <div class="value-card">
+            1500
+        </div>
     </div>
-    """, unsafe_allow_html=True)
 
-    st.markdown("""
     <div class="card">
-        <div class="judul">⚠️ Outstanding</div>
-        <div class="nilai">5</div>
+        <div class="title-card">
+            ✅ VERIFICATION
+        </div>
+        <div class="value-card">
+            100
+        </div>
     </div>
+
+    <div class="card">
+        <div class="title-card">
+            ⚠️ OUTSTANDING
+        </div>
+        <div class="value-card">
+            5
+        </div>
+    </div>
+
     """, unsafe_allow_html=True)
 
     if st.button("LOGOUT"):
